@@ -14,7 +14,7 @@
             font-family: 'Inter', sans-serif;
             line-height: 1.6;
             color: #ffffff;
-            background-color: transparent; /* Fully transparent background */
+            background-color: #000000;
             margin: 0;
             padding: 0;
             display: flex;
@@ -30,12 +30,6 @@
             max-height: 100vh;
             padding: 20px;
             box-sizing: border-box;
-            background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black background for container */
-            border-radius: 10px;
-            backdrop-filter: blur(5px); /* Adds a blur effect to the background */
-        }
-        h1, button, #promptDisplay, #instructionsContent {
-            text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
         }
         h1 {
             margin-bottom: 20px;
@@ -100,7 +94,7 @@
             align-items: center;
         }
         #instructionsContent {
-            background-color: rgba(255, 255, 255, 0.9);
+            background-color: #ffffff;
             color: #000000;
             padding: 20px;
             border-radius: 5px;
@@ -214,7 +208,7 @@
             })
             .catch(error => {
                 console.error('Error fetching generated prompt:', error);
-                promptDisplay.textContent = 'Error generating prompt. Please try again.';
+                promptDisplay.textContent = 'only 1 prompt allowed every 5 minutes. Please wait.';
             })
             .finally(() => {
                 generateButton.disabled = false;
