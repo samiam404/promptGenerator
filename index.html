@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>promptGenerator 1.0 - midjourney --ar 9:16</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: #ffffff;
+            background-color: #000000;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .container {
+            max-width: 800px;
+            width: 100%;
+            text-align: center;
+        }
+        h1 {
+            margin-bottom: 20px;
+        }
+        h1 a {
+            color: #ffffff;
+            text-decoration: none;
+        }
+        h1 a:hover {
+            text-decoration: underline;
+        }
+        button {
+            font-size: 18px;
+            padding: 10px 20px;
+            background-color: #ffffff;
+            color: #000000;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin: 10px;
+        }
+        button:hover {
+            background-color: #f0f0f0;
+        }
+        button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+        #promptDisplay {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            white-space: pre-wrap;
+            text-align: left;
+        }
+        #copyButton {
+            display: none;
+        }
+        #buyMeCoffeeButton {
+            display: block;
+            margin: 20px auto;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+        #buyMeCoffeeButton img {
+            max-width: 200px;
+            height: auto;
+        }
+        #instructionsOverlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        #instructionsContent {
+            background-color: #ffffff;
+            color: #000000;
+            padding: 20px;
+            border-radius: 5px;
+            max-width: 80%;
+            max-height: 80%;
+            overflow-y: auto;
+        }
+        #closeInstructions {
+            margin-top: 10px;
+            padding: 5px 10px;
+            background-color: #000000;
+            color: #ffffff;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>promptGenerator 1.0 - <a href="https://www.midjourney.com/imagine" target="_blank">midjourney</a> --ar 9:16</h1>
+        <button id="generateButton">release(ghosts)</button>
+        <button id="copyButton">copyPrompt</button>
+        <button id="instructionsButton">instructions</button>
+        <div id="promptDisplay"></div>
+        <button id="buyMeCoffeeButton" onclick="window.open('https://www.buymeacoffee.com/ghostsinthemachine', '_blank')">
+            <img src="assets/images/bmc-full-logo-no-background.png" alt="Buy Me a Coffee">
+        </button>
+    </div>
+
+    <div id="instructionsOverlay">
+        <div id="instructionsContent">
+            <h2>Instructions</h2>
+            <ol>
+                <li>Press release(ghosts).</li>
+                <li>Wait for your unique prompt.</li>
+                <li>Press copyPrompt.</li>
+                <li>Paste in <a href="https://www.midjourney.com/imagine" target="_blank">Midjourney</a></li>
+            </ol>
+            <p>Note: This prompt generator works best with Midjourney.</p>
+            <p><strong>Accessing Midjourney:</strong></p>
+            <ul>
+                <li>You need to have generated at least 100 images to access Midjourney's online image generation platform.</li>
+                <li>If you haven't reached this threshold or Midjourney hasn't fully released their online service yet, you can still use Midjourney via Discord.</li>
+                <li>For Discord access instructions, visit the <a href="https://docs.midjourney.com/docs/quick-start" target="_blank">Midjourney Discord Quick Start Guide</a>.</li>
+            </ul>
+            <p>This prompt generator has no affiliation with Midjourney. For full terms of service and legal information, please refer to our <a href="https://www.ghostsinthemachine.ai/c/tos/" target="_blank">Terms of Service</a>.</p>
+            <button id="closeInstructions">Close</button>
+        </div>
+    </div>
+
+    <script>
+        const generateButton = document.getElementById('generateButton');
+        const copyButton = document.getElementById('copyButton');
+        const promptDisplay = document.getElementById('promptDisplay');
+        const instructionsButton = document.getElementById('instructionsButton');
+        const instructionsOverlay = document.getElementById('instructionsOverlay');
+        const closeInstructions = document.getElementById('closeInstructions');
+
+        generateButton.addEventListener('click', fetchGeneratedPrompt);
+        copyButton.addEventListener('click', copyPrompt);
+        instructionsButton.addEventListener('click', showInstructions);
+        closeInstructions.addEventListener('click', hideInstructions);
+
+        function fetchGeneratedPrompt() {
+            generateButton.disabled = true;
+            generateButton.textContent = 'Releasing ghosts...';
+            promptDisplay.textContent = 'releasing ghosts...';
+            copyButton.style.display = 'none';
+
+            fetch('https://europe-west2-ghostsinthemachine.cloudfunctions.net/releaseGhosts-midjourneyCustom-Nitro/generate', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    eventId: "6804c1e1-45d9-426c-abce-90ffd685972d",
+                    eventType: "FORM_RESPONSE",
+                    createdAt: new Date().toISOString(),
+                    data: {
+                        responseId: "dzbOOV",
+                        submissionId: "dzbOOV",
+                        respondentId: "OYMBGa",
+                        formId: "3E1JN4",
+                        formName: "custom movieprompt midjourney",
+                        createdAt: new Date().toISOString(),
+                        fields: [
+                            {
+                                key: "question_QoqQYk",
+                                label: null,
+                                type: "INPUT_EMAIL",
+                                value: "user@example.com" // You can update this with the actual user's email if available
+                            }
+                        ]
+                    }
+                })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.generatedPrompt) {
+                    promptDisplay.textContent = data.generatedPrompt;
+                    copyButton.style.display = 'inline-block';
+                } else {
+                    promptDisplay.textContent = 'Error: Generated prompt not found in response.';
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching generated prompt:', error);
+                promptDisplay.textContent = 'Error generating prompt. Please try again.';
+            })
+            .finally(() => {
+                generateButton.disabled = false;
+                generateButton.textContent = 'release(ghosts)';
+            });
+        }
+
+        function copyPrompt() {
+            const promptText = promptDisplay.textContent;
+            navigator.clipboard.writeText(promptText).then(() => {
+                const originalText = copyButton.textContent;
+                copyButton.textContent = 'promptCopied!';
+                setTimeout(() => {
+                    copyButton.textContent = originalText;
+                }, 2000);
+            }).catch(err => {
+                console.error('Failed to copy text: ', err);
+            });
+        }
+
+        function showInstructions() {
+            instructionsOverlay.style.display = 'flex';
+        }
+
+        function hideInstructions() {
+            instructionsOverlay.style.display = 'none';
+        }
+    </script>
+</body>
+</html>
