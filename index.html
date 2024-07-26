@@ -218,15 +218,48 @@
 
         function copyPrompt() {
             const promptText = promptDisplay.textContent;
-            navigator.clipboard.writeText(promptText).then(() => {
-                const originalText = copyButton.textContent;
-                copyButton.textContent = 'promptCopied!';
-                setTimeout(() => {
-                    copyButton.textContent = originalText;
-                }, 2000);
-            }).catch(err => {
-                console.error('Failed to copy text: ', err);
-            });
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(promptText)
+                    .then(handleCopySuccess)
+                    .catch(err => fallbackCopyTextToClipboard(promptText));
+            } else {
+                fallbackCopyTextToClipboard(promptText);
+            }
+        }
+
+        function fallbackCopyTextToClipboard(text) {
+            const textArea = document.createElement("textarea");
+            textArea.value = text;
+            textArea.style.position = "fixed";  // Avoid scrolling to bottom
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+
+            try {
+                const successful = document.execCommand('copy');
+                if (successful) {
+                    handleCopySuccess();
+                } else {
+                    handleCopyError(new Error('Unable to copy'));
+                }
+            } catch (err) {
+                handleCopyError(err);
+            }
+
+            document.body.removeChild(textArea);
+        }
+
+        function handleCopySuccess() {
+            const originalText = copyButton.textContent;
+            copyButton.textContent = 'promptCopied!';
+            setTimeout(() => {
+                copyButton.textContent = originalText;
+            }, 2000);
+        }
+
+        function handleCopyError(err) {
+            console.error('Failed to copy text: ', err);
+            alert('Failed to copy text. Please try selecting and copying manually.');
         }
 
         function showInstructions() {
