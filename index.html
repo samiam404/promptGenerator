@@ -14,7 +14,7 @@
             font-family: 'Inter', sans-serif;
             line-height: 1.6;
             color: #ffffff;
-            background-color: #000000;
+            background-color: transparent; /* Set background to transparent */
             margin: 0;
             padding: 0;
             display: flex;
@@ -70,17 +70,6 @@
         #copyButton {
             display: none;
         }
-        #buyMeCoffeeButton {
-            display: block;
-            margin: 20px auto;
-            background: none;
-            border: none;
-            cursor: pointer;
-        }
-        #buyMeCoffeeButton img {
-            max-width: 200px;
-            height: auto;
-        }
         #instructionsOverlay {
             display: none;
             position: fixed;
@@ -120,9 +109,6 @@
         <button id="copyButton">copyPrompt</button>
         <button id="instructionsButton">instructions</button>
         <div id="promptDisplay"></div>
-        <button id="buyMeCoffeeButton" onclick="window.open('https://www.buymeacoffee.com/ghostsinthemachine', '_blank')">
-            <img src="assets/images/bmc-full-logo-no-background.png" alt="Buy Me a Coffee">
-        </button>
     </div>
 
     <div id="instructionsOverlay">
